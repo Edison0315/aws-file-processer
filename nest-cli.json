@@ -1,12 +1,6 @@
 {
   "$schema": "https://json.schemastore.org/nest-cli",
   "collection": "@nestjs/schematics",
-  "sourceRoot": "apps/aws-image-processer/src",
-  "compilerOptions": {
-    "deleteOutDir": true,
-    "webpack": true,
-    "tsConfigPath": "apps/aws-image-processer/tsconfig.app.json"
-  },
   "monorepo": true,
   "projects": {
     "api": {

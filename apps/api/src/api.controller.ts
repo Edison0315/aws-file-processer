@@ -1,12 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiService } from './api.service';
-
-@Controller()
+@Controller('api')
 export class ApiController {
   constructor(private readonly apiService: ApiService) {}
 
-  @Get()
-  getHello(): string {
-    return this.apiService.getHello();
+  @Post('/upload')
+  @UseInterceptors(FileInterceptor('file'))
+  uploadFile(@UploadedFile() file: any) {
+    return this.apiService.uploadFile(file);
   }
 }
