@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class WorkerService {
-  getHello(): string {
+  processFile(body: object): string {
+    
     return 'Hello World!';
   }
 }

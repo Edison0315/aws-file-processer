@@ -3,7 +3,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 @Injectable()
-export class AwsServicesService {
+export class S3Service {
   private s3Client: S3Client;
   private bucketName = process.env.ORIGINALS_BUCKET_NAME;
 

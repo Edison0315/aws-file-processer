@@ -1,12 +1,14 @@
 import axios from 'axios';
 import { Injectable } from '@nestjs/common';
-import { AwsServicesService } from 'shared/aws/aws-services/aws-services.service';
+import { S3Service } from '@shared/aws/aws-services/s3.service';
+import { SqsServiceService } from '@shared/aws/aws-services/sqs-service.service';
 
 @Injectable()
 export class ApiService {
 
   constructor(
-    private readonly awsServicesService: AwsServicesService
+    private readonly s3Service: S3Service,
+    private readonly sqsServiceService: SqsServiceService,
   ){}
 
   async uploadFile(uploadFile: any) {
@@ -14,7 +16,7 @@ export class ApiService {
     try {
 
       const { originalname, mimetype, buffer } = uploadFile
-      const { url } = await this.awsServicesService.getPresignedUploadUrl(originalname, mimetype);
+      const { url, key } = await this.s3Service.getPresignedUploadUrl(originalname, mimetype);
 
       const { status, statusText } = await axios.put(url, buffer, {
         headers: {
@@ -24,6 +26,15 @@ export class ApiService {
         maxContentLength: Infinity,
       });
 
+      // Publish SQS event
+      await this.sqsServiceService.sendMessage({
+        event: 'file.uploaded',
+        key,
+        originalname,
+        mimetype,
+        uploadedAt: new Date().toISOString(),
+      })
+      
       return {
         statusCode: status,
         message: statusText
