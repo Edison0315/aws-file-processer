@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "clean-dist",
+      "type": "shell",
+      "command": "rm -rf dist",
+      "problemMatcher": []
+    }
+  ]
+}

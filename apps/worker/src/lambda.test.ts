@@ -6,7 +6,7 @@ const fakeEvent: SQSEvent = {
     {
       messageId: '1',
       receiptHandle: 'fake-handle',
-      body: JSON.stringify({ foo: 'bar' }), // acá tu payload real
+      body: JSON.stringify({"event":"file.uploaded","key":"uploads/1788172555115-default.pdf","originalname":"default.pdf","mimetype":"application/pdf","uploadedAt":"2026-08-31T10:35:55.374Z"}),
       attributes: {} as any,
       messageAttributes: {},
       md5OfBody: '',
@@ -19,14 +19,10 @@ const fakeEvent: SQSEvent = {
 
 const fakeContext = {} as Context;
 
-(async() => {
+async function main() {
+  const result = await handler(fakeEvent, fakeContext, () => {});
+}
 
-  await handler(fakeEvent, fakeContext, () => {
-    console.log('algo...');
-  })
-
-})();
-
-// handler(fakeEvent, fakeContext, () => {}).then((res) => {
-//   console.log('Resultado:', res);
-// });
+main().catch((err) => {
+  console.error('Error en la ejecución:', err);
+});
